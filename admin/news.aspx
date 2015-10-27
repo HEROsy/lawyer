@@ -29,7 +29,7 @@
 				<div class="span12">
 					<div class="row-fluid">
 						<div class="span2">
-							 <button class="btn" type="button"><a href="AUnew.aspx">添加新闻</a></button>
+							<input type="button" class="btn" value="添加新闻" onclick="window.location.href='AUnew.aspx'"/>
 						</div>
 						<div class="span2">
 							<div class="btn-group">
