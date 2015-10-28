@@ -43,7 +43,7 @@
 									 <a data-toggle="dropdown" class="dropdown-toggle" href="#"><em class="icon-user icon-white"></em><strong class="caret"></strong></a>
 									<ul class="dropdown-menu">
 										<li>
-											<a href="#">修改密码</a>
+											<a href="cpw.aspx" target="center">修改密码</a>
 										</li>
 										<li>
 											<a href="#">安全退出</a>
