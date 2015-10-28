@@ -1,0 +1,72 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Web;
+
+/// <summary>
+/// Tools 的摘要说明
+/// </summary>
+public static class Tools
+{
+    public static String BiuldJson(String Backcol,DataTable dt)
+    {
+        String json = "";
+        if (dt!=null)
+        {
+            String str = "";
+            String[] colnames = null;
+            String _key = "";
+            String _value = "";
+
+            if (String.IsNullOrEmpty(Backcol))
+            {
+                int cn = dt.Columns.Count;
+                colnames = new String[cn];
+                for (int i = 0; i < cn; i++)
+                {
+                    colnames[i] = dt.Columns[i].ColumnName;
+                }
+            }
+            else
+            {
+                if (Backcol.Contains(','))
+                {
+                    colnames = Backcol.Split(',');
+                }
+                else
+                {
+                    colnames = new String[] { Backcol};
+                }
+            }
+
+            foreach (DataRow item in dt.Rows)
+            {
+                foreach (String cname in colnames)
+                {
+                    _key =cname;
+                    _value =encode(item[cname].ToString());
+                    str = str + "\"" + _key + "\":\"" + _value + "\",";
+                }
+                str = str.Substring(0, str.LastIndexOf(','));
+                str = "{"+str+"},";
+                json = json + str;
+                str = "";
+            }
+
+         
+        }
+       
+
+        String r = String.Format("[{0}]",json);
+        return r;
+    }
+
+    public static String encode(String str)
+    {
+        str = str.Replace("\n", "<br/>");
+        str = HttpUtility.UrlEncode(str, Encoding.UTF8);
+        return str;
+    }
+}

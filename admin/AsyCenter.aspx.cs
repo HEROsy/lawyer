@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -37,6 +38,16 @@ public partial class admin_AsyCenter : System.Web.UI.Page
         String pic=Request.Form["pic"];
         String contents=Request.Form["contents"];
 
-
+        int r = bll.InsertNew(title, bc, sc, pic, contents,DateTime.Now);
+        if (r == 1)
+        {
+            Response.Write("ok:");
+            Response.End();
+        }
+        else
+        {
+            Response.Write("no:");
+            Response.End();
+        }
     }
 }

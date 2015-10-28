@@ -18,6 +18,8 @@
 
         var edit;
         var upok = true;
+        var data_class;
+
         KindEditor.ready(function (K) {
             edit = K.create('#ebox', {
                 uploadJson: 'kindeditor-4.1.10/asp.net/upload_json.ashx',
@@ -33,6 +35,44 @@
         {
             bindupchange();
             bindsend();
+            InitClassValue();
+            bindbc();
+        }
+
+        function InitClassValue()
+        {
+            var v = document.getElementById("bsvalue").value; 
+            data_class = eval("("+v+")");
+        }
+
+        function bindbc()
+        {
+            var bc = document.getElementById("bc");
+            bc.length = 0;
+            for (var i = 0; i < data_class.length; i++) {
+                if(data_class[i].type=="b")
+                {
+                    bc.options.add(new Option(decodeURIComponent(data_class[i].names),decodeURIComponent(data_class[i].id)));
+                }
+            }
+            bc.onchange = function ()
+            {
+                bindsc();
+            }
+        }
+
+        function bindsc() {
+            var bc = document.getElementById("bc");
+            var sindex = bc.selectedIndex;
+            var svalue = bc.options[sindex].value;
+
+            var sc = document.getElementById("sc");
+            sc.length = 0;
+            for (var i = 0; i < data_class.length; i++) {
+                if (data_class[i].pid == svalue) {
+                    sc.options.add(new Option(decodeURIComponent(data_class[i].names), decodeURIComponent(data_class[i].id)));
+                }
+            }
         }
 
         function bindsend()
@@ -69,7 +109,15 @@
                     },
                     success: function (data)
                     {
-                        btn.disabled = false;
+                        var r = data.split(":");
+                        if (r[0] == "ok") {
+                            alert('添加完成');
+                            window.location.reload();
+                        } else {
+                            alert('添加失败');
+                            btn.disabled = false;
+                            window.location.reload();
+                        }
                     }
                 })
             }
@@ -98,19 +146,6 @@
                             }
                         },
                         erorr: function (data) {
-                            //data = data.replace("<PRE>", "").replace("</PRE>", "");
-                            //var r = data.split(":");
-                            //if (r[0] == "no") {
-                            //    uf.value = "";
-                            //    upfileok = true;
-                            //    alert(r[1]);
-                            //    return false;
-                            //} else if (r[0] == "ok") {
-                            //    upfileok = true;
-                            //    alert("上传成功!");
-                            //    window.location.reload();
-                            //    return true;
-                            //}
                         }
                     })
                 }
@@ -150,6 +185,7 @@
                         </select>
                     </div>
                 </fieldset>
+                <input type="hidden" value='<%=classvalue %>' id="bsvalue"/>
                 <fieldset>
                     <label>新闻图片</label>
                     <form method="post" id="ufrm" style="width: 126px; height: 30px; display: block; overflow: hidden; position: relative;">
