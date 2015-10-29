@@ -12,6 +12,12 @@ public static class Tools
 {
     public static String BiuldJson(String Backcol,DataTable dt)
     {
+        //前台js decode
+        // function decode(str) {
+        //    str = decodeURIComponent(str.replace(/\+/g, '%20'));
+        //    return str;
+        //}
+
         String json = "";
         if (dt!=null)
         {
@@ -57,8 +63,8 @@ public static class Tools
 
          
         }
-       
 
+        json = json.Substring(0, json.LastIndexOf(','));
         String r = String.Format("[{0}]",json);
         return r;
     }

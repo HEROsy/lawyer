@@ -34,4 +34,27 @@ public class _BLL
         String sql = SqlHelper.GetSQLSelect_normal("", "id,names,type,pid", "fl", null, "", "", "id asc");
         return SqlHelper.GetTable(sql, CommandType.Text, null);
     }
+
+    public DataTable GetNews(SqlParameter[] spr)
+    {
+        String sql = "";
+        if (spr == null)
+        {
+            sql = SqlHelper.GetSQLSelect_normal("", "id,titles,fbtimes,bclass,sclass", "article", spr, "", "", "id desc");
+        }
+        else
+        {
+            if (spr.Length == 1)
+            {
+                sql = SqlHelper.GetSQLSelect_normal("", "id,titles,fbtimes,bclass,sclass", "article", spr, "=", "", "id desc");
+            }
+            else if (spr.Length == 2)
+            {
+                sql = SqlHelper.GetSQLSelect_normal("", "id,titles,fbtimes,bclass,sclass", "article", spr, "=,=", "and", "id desc");
+            }
+        }
+       
+        
+        return SqlHelper.GetTable(sql, CommandType.Text, spr);
+    }
 }

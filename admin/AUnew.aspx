@@ -49,6 +49,7 @@
         {
             var bc = document.getElementById("bc");
             bc.length = 0;
+            bc.options.add(new Option("请选择","-1"));
             for (var i = 0; i < data_class.length; i++) {
                 if(data_class[i].type=="b")
                 {
@@ -68,6 +69,7 @@
 
             var sc = document.getElementById("sc");
             sc.length = 0;
+            sc.options.add(new Option("请选择", "-1"));
             for (var i = 0; i < data_class.length; i++) {
                 if (data_class[i].pid == svalue) {
                     sc.options.add(new Option(decodeURIComponent(data_class[i].names), decodeURIComponent(data_class[i].id)));
