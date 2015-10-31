@@ -2,6 +2,7 @@
 
 <!DOCTYPE html>
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -26,7 +27,7 @@
             bindbc();
             document.getElementById("sc").onchange = function () { getdata(); }
             tbody = document.getElementById("tbody");
-            getdata();
+            //getdata();
             parentfram = window.parent.document.getElementById("fc");
             body = document.getElementsByTagName("body")[0];
             
@@ -161,7 +162,8 @@
 
         function aprow(titles, bc, sc, times, id, classname) {
             var newrow = document.createElement("tr");
-            newrow.className=classname;
+            newrow.className = classname;
+            newrow.id = id;
             var inhtml = "<td>" + titles + "</td>" +
                          "<td>" + bc + "</td>" +
                          "<td>" + sc + "</td>" +
@@ -169,8 +171,10 @@
                          "<td><input type='button' value='删除' onclick=\"_delete('" + id + "','" + titles + "')\" /> &nbsp&nbsp<input type='button' value='修改' onclick='_update(\"" + id + "\")'/>" +
                          "</td>"
             newrow.innerHTML = inhtml;
-            document.getElementById("tbody").appendChild(newrow);
+            document.getElementById("tbodybox").appendChild(newrow);
         }
+
+
 
         function _delete(did,title)
         {
@@ -178,7 +182,29 @@
                 return false;
             }
             if (confirm("确定要删除 "+title+" ？")) {
+                $.ajax({
+                    type: "post",
+                    url: "AsyCenter.aspx",
+                    data:{
+                        aty: "deletenew",
+                        did:did
+                    },
+                    success:function(data)
+                    {
+                        var r = data.split(":");
+                        if (r[0] == "ok") {
+                            alert("已删除！");
+                            var dr = document.getElementById(did);
+                            dr.innerHTML = "";
+                        } else {
+                            alert("删除失败！");
+                        }
+                    },
+                    error:function(data){
+                    
+                    }
 
+                })
             }
         }
 
@@ -187,6 +213,7 @@
             if (uid=="") {
                 return false;
             }
+            window.location.href = "AUnew.aspx?uid="+uid;
         }
 
         function upPFramHeight()
@@ -200,8 +227,27 @@
 
         function cleartable()
         {
-            document.getElementById("tablebox").innerHTML = "<table class='table'><thead><tr><th>新闻标题</th><th>所属分类</th><th>所属分类</th><th>发布时间</th><th>操作</th></tr></thead><tbody id='tbody'></tbody></table>";
+            document.getElementById("tablebox").innerHTML = "<table class='table'><thead><tr><th>新闻标题</th><th>所属分类</th><th>所属分类</th><th>发布时间</th><th>操作</th></tr></thead><tbody id='tbodybox'></tbody></table>";
             
+        }
+
+        function a(titles, bc, sc, times, id, classname) {
+            var newrow = document.createElement("tr");
+            newrow.className = classname;
+            newrow.id = id;
+            var inhtml = "<tr><td>" + titles + "</td>" +
+                         "<td>" + bc + "</td>" +
+                         "<td>" + sc + "</td>" +
+                         "<td>" + times + "</td>" +
+                         "<td><input type='button' value='删除' onclick=\"_delete('" + id + "','" + titles + "')\" /> &nbsp&nbsp<input type='button' value='修改' onclick='_update(\"" + id + "\")'/>" +
+                         "</td></tr>"
+            return inhtml;
+        }
+
+        function f()
+        {
+            document.getElementById("tablebox").innerHTML = "<table class='table'><thead><tr><th>新闻标题</th><th>所属分类</th><th>所属分类</th><th>发布时间</th><th>操作</th></tr></thead><tbody id='tbodybox'>"+a("1","1","1","2013-1-1","1","")+"</tbody></table>";
+
         }
        
     </script>
@@ -225,6 +271,7 @@
 					<div class="row-fluid">
 						<div class="span2">
 							<input type="button" class="btn" value="添加新闻" onclick="window.location.href='AUnew.aspx'"/>
+                            <input type="button" value="dsf" onclick="f()" />
 						</div>
 						<div class="span3">
 							<div class="btn-group">
@@ -262,7 +309,7 @@
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody id="tbody">
+                            <tbody id="tbodybox">
                             </tbody>
                         </table>
                     </div>

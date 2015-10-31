@@ -37,6 +37,7 @@
             bindsend();
             InitClassValue();
             bindbc();
+            Initvalue();
         }
 
         function InitClassValue()
@@ -77,6 +78,12 @@
             }
         }
 
+        function GetQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]); return null;
+        }
+
         function bindsend()
         {
             var btn = document.getElementById("send");
@@ -97,28 +104,37 @@
                 if (bc == "-1" || sc == "-1") { alert('请选择分类！'); return false;}
                 if (contents.replace(/\s+/g, "") == "") { alert("请输入正文内容！"); return false; }
 
+                var uid = GetQueryString("uid");
+                var _aty = "";
+                if (uid == null) {
+                    _aty = "addnew";
+                } else {
+                    _aty = "upnew";
+                }
+
+
                 btn.disabled = true;
                 $.ajax({
                     type: 'post',
                     url: 'AsyCenter.aspx',
                     data: {
-                        aty:'addnew',
+                        aty:_aty,
                         title: title,
                         bc: bc,
                         sc: sc,
                         pic: pic,
-                        contents:contents
+                        contents: contents,
+                        uid:uid
                     },
                     success: function (data)
                     {
                         var r = data.split(":");
                         if (r[0] == "ok") {
-                            alert('添加完成');
+                            alert('操作完成');
                             window.location.reload();
                         } else {
-                            alert('添加失败');
+                            alert('操作失败');
                             btn.disabled = false;
-                            window.location.reload();
                         }
                     }
                 })
@@ -151,7 +167,45 @@
                         }
                     })
                 }
+        }
+
+        function decode(str) {
+            str = decodeURIComponent(str.replace(/\+/g, '%20'));
+            return str;
+        }
+
+        function Initvalue()
+        {
+            var v = document.getElementById("v_contents").value;
+            if (v == "") { return false;}
+            var data = eval("(" + v + ")");
+            if (data!="" && data!=null) {
+                document.getElementById("title").value = decode(data[0].titles);
+                var sbc = data[0].bclass;
+                var ssc = data[0].sclass;
+                var bselect = document.getElementById("bc");
+                for (var i = 0; i < bselect.options.length; i++) {
+                    if (bselect.options[i].value==sbc) {
+                        bselect.options[i].selected = true;
+                        break;
+                    }
+                }
+
+                bindsc();
+
+                var sselect = document.getElementById("sc");
+                for (var i = 0; i < sselect.options.length; i++) {
+                    if (sselect.options[i].value == ssc) {
+                        sselect.options[i].selected = true;
+                        break;
+                    }
+                }
             }
+
+            var img = document.getElementById("preimg");
+            img.src = "../img/upload/" + data[0].pic;
+            document.getElementById("ufname").value = data[0].pic;
+        }
 
     </script>
 </head>
@@ -172,6 +226,7 @@
     <div class="container">
         <div class="row">
             <div class="span4">
+                <input type="hidden" id="v_contents" value='<%=contents %>' />
                 <fieldset>
                     <label>新闻标题</label>
                     <input type="text" placeholder="新闻标题" id="title"/>
@@ -202,8 +257,8 @@
             </div>
 
             <div class="span8">
-                <textarea id="ebox" style="width: 500px; height: 650px"></textarea>
-                <input type="button" value="确认添加" id="send" style="margin-top: 20px;" />
+                <textarea id="ebox" style="width: 500px; height: 650px"><%=ec %></textarea>
+                <input type="button" value="<%=btname %>" id="send" style="margin-top: 20px;" />
             </div>
 
 

@@ -29,10 +29,84 @@ public partial class admin_AsyCenter : System.Web.UI.Page
             case "getnew":
                 getnew();
                 break;
+
+            case "deletenew":
+                DeleteNew();
+                break;
+
+            case "addsws":
+                AddSws();
+                break;
+
+            case "upnew":
+                UpNew();
+                break;
             default:
                 break;
         }
 
+    }
+
+    private void UpNew()
+    {
+        String uid = Request.Form["uid"];
+        String title = Request.Form["title"];
+        String bc = Request.Form["bc"];
+        String sc = Request.Form["sc"];
+        String pic = Request.Form["pic"];
+        String contents = Request.Form["contents"];
+
+        int r=bll.UpNew(title, bc, sc, pic, contents, uid);
+        if (r == 1)
+        {
+            Response.Write("ok:");
+            Response.End();
+        }
+        else
+        {
+            Response.Write("no:");
+            Response.End();
+        }
+    }
+
+    private void AddSws()
+    {
+        String name = Request.Form["name"];
+        String px=Request.Form["px"];
+        String pic=Request.Form["pic"];
+        String contents=Request.Form["contents"];
+
+        int r=bll.AddSws(name, px, pic, contents);
+        if (r == 1)
+        {
+            Response.Write("ok:");
+            Response.End();
+        }
+        else
+        {
+            Response.Write("no:");
+            Response.End();
+        }
+    }
+
+    private void DeleteNew()
+    {
+        String did=Request.Form["did"];
+        int r = -1; ;
+        if (!String.IsNullOrEmpty(did))
+        {
+            r=bll.DeleteNew(did);
+        }
+        if (r == 1)
+        {
+            Response.Write("ok:");
+            Response.End();
+        }
+        else
+        {
+            Response.Write("no:");
+            Response.End();
+        }
     }
 
     private void getnew()

@@ -10,6 +10,86 @@
     <script src="style/js/js.js"></script>
     <link href="style/css/bootstrap.min.css" rel="stylesheet" />
     <title></title>
+
+    <script type="text/javascript">
+        window.onload = function ()
+        {
+
+        }
+
+        function getdata() {
+            var bc = document.getElementById("bc");
+            var sc = document.getElementById("sc");
+            var bs = bc.options[bc.selectedIndex].value;
+            var ss = sc.options[sc.selectedIndex].value;
+
+            // if (bs == "-1") { return false; }
+            $.ajax({
+                type: 'post',
+                url: 'AsyCenter.aspx',
+                data: {
+                    aty: 'getnew',
+                    bs: bs,
+                    ss: ss
+                },
+                success: function (data) {
+                    //tbody.innerHTML = "";
+                    cleartable();
+                    var md = null;
+                    try {
+                        md = eval("(" + data + ")");
+                    } catch (e) {
+                        aprow("无内容...", "", "", "", "");
+                        return false;
+                    }
+                    creatrow(md);
+                }
+            })
+        }
+
+        function creatrow(md) {
+            var bn = "";
+            var sn = "";
+            var times = "";
+            var classname = "";
+            var tab = 0;
+            for (var i = 0; i < md.length; i++) {
+                bn = getclassname(data_class, md[i].bclass);
+                sn = getclassname(data_class, md[i].sclass);
+                times = Inittimes(decode(md[i].fbtimes));
+                tab = (i + 5) % 5;
+                switch (tab) {
+                    case 0:
+                        classname = "";
+                        break;
+                    case 1:
+                        classname = "success";
+                        break;
+                    case 2:
+                        classname = "warning";
+                        break;
+                    case 3:
+                        classname = "error";
+                        break;
+                    case 4:
+                        classname = "info";
+                        break;
+                    default: classname = "";
+
+                }
+                aprow(decode(md[i].titles), bn, sn, times, decode(md[i].id), classname);
+            }
+            upPFramHeight();
+
+        }
+
+        function Inittimes(timestr) {
+            return timestr.substr(0, timestr.indexOf(" "));
+        }
+
+        
+
+    </script>
 </head>
 <body>
     
