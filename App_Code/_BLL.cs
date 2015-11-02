@@ -46,6 +46,22 @@ public class _BLL
         return SqlHelper.ExcoutSQL_2Parmter(sql, CommandType.Text, setspr, wherespr);
     }
 
+    public int UpSws(String name, String px, String pic, String contents, String uid)
+    {
+        SqlParameter[] setspr = new SqlParameter[]{
+        new SqlParameter("@names",name),
+        new SqlParameter("@px",px),
+        new SqlParameter("@contents",contents),
+        new SqlParameter("@pic",pic)
+       };
+        SqlParameter[] wherespr = new SqlParameter[]{
+        new SqlParameter("@id",uid)
+        };
+
+        String sql = SqlHelper.GetSQLUpdate_normal("sws", setspr, wherespr, "=", "");
+        return SqlHelper.ExcoutSQL_2Parmter(sql, CommandType.Text, setspr, wherespr);
+    }
+
     public DataTable GetNewClass()
     {
         String sql = SqlHelper.GetSQLSelect_normal("", "id,names,type,pid", "fl", null, "", "", "id asc");
@@ -86,12 +102,33 @@ public class _BLL
         return SqlHelper.GetTable(sql, CommandType.Text, spr);
     }
 
+    public DataTable GetSws_one(String uid)
+    {
+        SqlParameter[] spr = new SqlParameter[] { 
+        new SqlParameter("@id",uid)
+        };
+        String sql = "";
+        sql = SqlHelper.GetSQLSelect_normal("", "*", "sws", spr, "=", "", "id desc");
+
+        return SqlHelper.GetTable(sql, CommandType.Text, spr);
+    }
+
     public int DeleteNew(String did)
     {
         SqlParameter[] spr = new SqlParameter[]{
         new SqlParameter("@did",did)
         };
         String sql = "delete from article where id=@did";
+        return SqlHelper.ExcoutSQL(sql, CommandType.Text, spr);
+
+    }
+
+    public int DeleteSws(String did)
+    {
+        SqlParameter[] spr = new SqlParameter[]{
+        new SqlParameter("@did",did)
+        };
+        String sql = "delete from sws where id=@did";
         return SqlHelper.ExcoutSQL(sql, CommandType.Text, spr);
 
     }
@@ -109,5 +146,9 @@ public class _BLL
         return SqlHelper.ExcoutSQL(sql, CommandType.Text, spr);
     }
 
-    
+    public DataTable GetSws()
+    {
+        String sql = SqlHelper.GetSQLSelect_normal("", "*", "sws", null, "", "", "px asc");
+        return SqlHelper.GetTable(sql, CommandType.Text, null);
+    }
 }

@@ -30,8 +30,17 @@ public partial class admin_AsyCenter : System.Web.UI.Page
                 getnew();
                 break;
 
+
+            case "getsws":
+                getsws();
+                break;
+
             case "deletenew":
                 DeleteNew();
+                break;
+
+            case "deletesws":
+                DeleteSws();
                 break;
 
             case "addsws":
@@ -41,10 +50,67 @@ public partial class admin_AsyCenter : System.Web.UI.Page
             case "upnew":
                 UpNew();
                 break;
+
+            case "upsws":
+                UpSws();
+                break;
             default:
                 break;
         }
 
+    }
+
+    private void UpSws()
+    {
+        String name = Request.Form["name"];
+        String px = Request.Form["px"];
+        String pic = Request.Form["pic"];
+        String contents = Request.Form["contents"];
+        String uid=Request.Form["uid"];
+
+        int r = bll.UpSws(name,px,pic,contents,uid);
+        if (r == 1)
+        {
+            Response.Write("ok:");
+            Response.End();
+        }
+        else
+        {
+            Response.Write("no:");
+            Response.End();
+        }
+    }
+
+    private void DeleteSws()
+    {
+        String did = Request.Form["did"];
+        int r = -1; ;
+        if (!String.IsNullOrEmpty(did))
+        {
+            r = bll.DeleteSws(did);
+        }
+        if (r == 1)
+        {
+            Response.Write("ok:");
+            Response.End();
+        }
+        else
+        {
+            Response.Write("no:");
+            Response.End();
+        }
+    }
+
+    private void getsws()
+    {
+       DataTable dt= bll.GetSws();
+       String r = "";
+       if (dt!=null)
+       {
+           r = Tools.BiuldJson("",dt);
+       }
+       Response.Write(r);
+       Response.End();
     }
 
     private void UpNew()

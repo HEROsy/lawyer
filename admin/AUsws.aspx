@@ -17,8 +17,17 @@
          {
              bindupchange();
              bindsend();
+             Initimg();
          }
         
+         function Initimg()
+         {
+             var pic = document.getElementById("ufname").value;
+             if (pic!="") {
+                 document.getElementById("preimg").src = "../img/upload/" + pic;;
+             }
+         }
+
          function bindupchange() {
              var uf = document.getElementById("upfile");
              uf.onchange = function () {
@@ -47,6 +56,12 @@
              }
          }
 
+         function GetQueryString(name) {
+             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+             var r = window.location.search.substr(1).match(reg);
+             if (r != null) return unescape(r[2]); return null;
+         }
+
          function bindsend() {
              var btn = document.getElementById("send");
              btn.onclick = function () {
@@ -61,25 +76,33 @@
 
                  //只能数字
                  if (!/^[0-9]*$/.test(px)) { alert("排序只能是数字且整数！"); return false; }
-
+                 var uid=GetQueryString("uid");
+                 var _aty="";
+                 if (uid==null) {
+                     _aty="addsws";
+                 }else
+                 {
+                     _aty="upsws";
+                 }
                  $.ajax({
                      type: "post",
                      url: "AsyCenter.aspx",
                      data: {
-                         aty:"addsws",
+                         aty:_aty,
                          name: name,
                          px: px,
                          pic: pic,
-                         contents:contents
+                         contents: contents,
+                         uid:uid
                      },
                      success: function (data)
                      {
                          var r = data.split(":");
                          if (r[0] == "ok") {
-                             alert("添加成功！");
+                             alert("操作成功！");
                              window.location.reload();
                          } else {
-                             alert("添加失败！");
+                             alert("操作失败！");
                          }
                      },
                      error: function (data)
@@ -109,13 +132,13 @@
 
         <div class="row">
             <div class="span6">
-                <label>事务所名称</label><input type="text" id="name" />
-                <label>排序</label><input type="text" id="px" />
+                <label>事务所名称</label><input type="text" id="name" value="<%=name %>" />
+                <label>排序</label><input type="text" id="px" value="<%=px %>"/>
                 <label>事务所图片</label>
                 <form method="post" id="ufrm" style="width: 126px; height: 30px; display: block; overflow: hidden; position: relative;">
                     <input type="button" value="上传" id="upbtn" class="btn" style="width: 126px; height: 30px;" />
                     <input type="file" name="upfile" id="upfile" style="width: 126px; height: 30px; position: absolute; top: 0; left: 0; opacity: 0; filter: alpha(opacity=0);" />
-                    <input type="hidden" id="ufname" value="" />
+                    <input type="hidden" id="ufname" value="<%=pic %>" />
                 </form>
             </div>
             <div class="span6">
@@ -125,8 +148,8 @@
         <div class="row">
             <div class="span12">
                 <label>事务所介绍</label>
-                <textarea id="ebox" style="width: 636px; height: 300px; resize: none"></textarea>
-                <input type="button" value="确认添加" id="send" style="margin-top: 20px; display: block;" />
+                <textarea id="ebox" style="width: 636px; height: 300px; resize: none"><%=contents %></textarea>
+                <input type="button" value="<%=BtnValue %>" id="send" style="margin-top: 20px; display: block;" />
             </div>
         </div>
     </div>

@@ -27,7 +27,7 @@
             bindbc();
             document.getElementById("sc").onchange = function () { getdata(); }
             tbody = document.getElementById("tbody");
-            //getdata();
+            getdata();
             parentfram = window.parent.document.getElementById("fc");
             body = document.getElementsByTagName("body")[0];
             
@@ -76,7 +76,6 @@
             var bs = bc.options[bc.selectedIndex].value;
             var ss = sc.options[sc.selectedIndex].value;
 
-           // if (bs == "-1") { return false; }
             $.ajax({
                 type: 'post',
                 url: 'AsyCenter.aspx',
@@ -86,13 +85,11 @@
                     ss: ss
                 },
                 success: function (data) {
-                    //tbody.innerHTML = "";
-                    cleartable();
                     var md = null;
                     try {
                         md = eval("(" + data + ")");
                     } catch (e) {
-                        aprow("无内容...", "", "", "", "");
+                        emptyrow();
                         return false;
                     }
                     creatrow(md);
@@ -102,11 +99,15 @@
 
         function creatrow(md)
         {
+
+            var a = "<table class='table table-hover'><thead><tr><th>新闻标题</th><th>所属分类</th><th>所属分类</th><th>发布时间</th><th>操作</th></tr></thead><tbody id='tbodybox'>";//</tbody></table>";
+
             var bn = "";
             var sn = "";
             var times = "";
             var classname = "";
             var tab = 0;
+            var rowhtml = "";
             for (var i = 0; i < md.length; i++) {
                 bn = getclassname(data_class, md[i].bclass);
                 sn = getclassname(data_class, md[i].sclass);
@@ -131,8 +132,11 @@
                     default: classname = "";
 
                 }
-                aprow(decode(md[i].titles), bn, sn, times, decode(md[i].id), classname);
+                rowhtml = aprow(decode(md[i].titles), bn, sn, times, decode(md[i].id), classname);
+                a = a + rowhtml;
             }
+            a = a + "</tbody></table>";
+            document.getElementById("tablebox").innerHTML = a;
             upPFramHeight();
            
         }
@@ -161,20 +165,16 @@
         }
 
         function aprow(titles, bc, sc, times, id, classname) {
-            var newrow = document.createElement("tr");
-            newrow.className = classname;
-            newrow.id = id;
-            var inhtml = "<td>" + titles + "</td>" +
+
+            var inhtml = "<tr class=" + classname + " id='" + id + "'><td>" + titles + "</td>" +
                          "<td>" + bc + "</td>" +
                          "<td>" + sc + "</td>" +
                          "<td>" + times + "</td>" +
                          "<td><input type='button' value='删除' onclick=\"_delete('" + id + "','" + titles + "')\" /> &nbsp&nbsp<input type='button' value='修改' onclick='_update(\"" + id + "\")'/>" +
-                         "</td>"
-            newrow.innerHTML = inhtml;
-            document.getElementById("tbodybox").appendChild(newrow);
+                         "</td>" +
+                         "</tr>";
+            return inhtml;
         }
-
-
 
         function _delete(did,title)
         {
@@ -195,7 +195,7 @@
                         if (r[0] == "ok") {
                             alert("已删除！");
                             var dr = document.getElementById(did);
-                            dr.innerHTML = "";
+                            dr.style.display = "none";
                         } else {
                             alert("删除失败！");
                         }
@@ -225,31 +225,13 @@
             }
         }
 
-        function cleartable()
+        function emptyrow()
         {
-            document.getElementById("tablebox").innerHTML = "<table class='table'><thead><tr><th>新闻标题</th><th>所属分类</th><th>所属分类</th><th>发布时间</th><th>操作</th></tr></thead><tbody id='tbodybox'></tbody></table>";
-            
+            var a = "<table class='table'><thead><tr><th>新闻标题</th><th>所属分类</th><th>所属分类</th><th>发布时间</th><th>操作</th></tr></thead><tbody id='tbodybox'>";//</tbody></table>";
+            a = a + aprow("无内容...", "", "", "", "", "") + "</tbody></table>";
+            document.getElementById("tablebox").innerHTML = a;
         }
 
-        function a(titles, bc, sc, times, id, classname) {
-            var newrow = document.createElement("tr");
-            newrow.className = classname;
-            newrow.id = id;
-            var inhtml = "<tr><td>" + titles + "</td>" +
-                         "<td>" + bc + "</td>" +
-                         "<td>" + sc + "</td>" +
-                         "<td>" + times + "</td>" +
-                         "<td><input type='button' value='删除' onclick=\"_delete('" + id + "','" + titles + "')\" /> &nbsp&nbsp<input type='button' value='修改' onclick='_update(\"" + id + "\")'/>" +
-                         "</td></tr>"
-            return inhtml;
-        }
-
-        function f()
-        {
-            document.getElementById("tablebox").innerHTML = "<table class='table'><thead><tr><th>新闻标题</th><th>所属分类</th><th>所属分类</th><th>发布时间</th><th>操作</th></tr></thead><tbody id='tbodybox'>"+a("1","1","1","2013-1-1","1","")+"</tbody></table>";
-
-        }
-       
     </script>
 </head>
 <body >
@@ -271,7 +253,6 @@
 					<div class="row-fluid">
 						<div class="span2">
 							<input type="button" class="btn" value="添加新闻" onclick="window.location.href='AUnew.aspx'"/>
-                            <input type="button" value="dsf" onclick="f()" />
 						</div>
 						<div class="span3">
 							<div class="btn-group">

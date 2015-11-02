@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <script src="style/js/jquery-1.8.2.min.js"></script>
     <script src="style/js/bootstrap.min.js"></script>
     <script src="style/js/js.js"></script>
@@ -12,34 +12,29 @@
     <title></title>
 
     <script type="text/javascript">
-        window.onload = function ()
-        {
+        var parentfram = null;
+        var body = null;
 
+        window.onload = function () {
+            parentfram = window.parent.document.getElementById("fc");
+            body = document.getElementsByTagName("body")[0];
+            getdata();
         }
 
         function getdata() {
-            var bc = document.getElementById("bc");
-            var sc = document.getElementById("sc");
-            var bs = bc.options[bc.selectedIndex].value;
-            var ss = sc.options[sc.selectedIndex].value;
 
-            // if (bs == "-1") { return false; }
             $.ajax({
                 type: 'post',
                 url: 'AsyCenter.aspx',
                 data: {
-                    aty: 'getnew',
-                    bs: bs,
-                    ss: ss
+                    aty: 'getsws'
                 },
                 success: function (data) {
-                    //tbody.innerHTML = "";
-                    cleartable();
                     var md = null;
                     try {
                         md = eval("(" + data + ")");
                     } catch (e) {
-                        aprow("无内容...", "", "", "", "");
+                        emptyrow();
                         return false;
                     }
                     creatrow(md);
@@ -48,15 +43,15 @@
         }
 
         function creatrow(md) {
-            var bn = "";
-            var sn = "";
-            var times = "";
+
+            var a = "<table class='table table-hover'><thead><tr><th>事务所名称</th><th>排序</th><th>操作</th></tr></thead><tbody id='tbodybox'>";//</tbody></table>";
+
+            var title = "";
+            var px = "";
             var classname = "";
             var tab = 0;
+            var rowhtml = "";
             for (var i = 0; i < md.length; i++) {
-                bn = getclassname(data_class, md[i].bclass);
-                sn = getclassname(data_class, md[i].sclass);
-                times = Inittimes(decode(md[i].fbtimes));
                 tab = (i + 5) % 5;
                 switch (tab) {
                     case 0:
@@ -77,8 +72,11 @@
                     default: classname = "";
 
                 }
-                aprow(decode(md[i].titles), bn, sn, times, decode(md[i].id), classname);
+                rowhtml = aprow(decode(md[i].names),decode(md[i].px), decode(md[i].id), classname);
+                a = a + rowhtml;
             }
+            a = a + "</tbody></table>";
+            document.getElementById("tablebox").innerHTML = a;
             upPFramHeight();
 
         }
@@ -87,140 +85,116 @@
             return timestr.substr(0, timestr.indexOf(" "));
         }
 
-        
+        function decode(str) {
+            str = decodeURIComponent(str.replace(/\+/g, '%20'));
+            return str;
+        }
+
+        function aprow(titles, px, id, classname) {
+
+            var inhtml = "<tr class=" + classname + " id='" + id + "'><td>" + titles + "</td>" +
+                         "<td>" + px + "</td>" +
+                         "<td><input type='button' value='删除' onclick=\"_delete('" + id + "','" + titles + "')\" /> &nbsp&nbsp<input type='button' value='修改' onclick='_update(\"" + id + "\")'/>" +
+                         "</td>" +
+                         "</tr>";
+            return inhtml;
+        }
+
+        function _delete(did, title) {
+            if (did == "") {
+                return false;
+            }
+            if (confirm("确定要删除 " + title + " ？")) {
+                $.ajax({
+                    type: "post",
+                    url: "AsyCenter.aspx",
+                    data: {
+                        aty: "deletesws",
+                        did: did
+                    },
+                    success: function (data) {
+                        var r = data.split(":");
+                        if (r[0] == "ok") {
+                            alert("已删除！");
+                            var dr = document.getElementById(did);
+                            dr.style.display = "none";
+                        } else {
+                            alert("删除失败！");
+                        }
+                    },
+                    error: function (data) {
+
+                    }
+
+                })
+            }
+        }
+
+        function _update(uid) {
+            if (uid == "") {
+                return false;
+            }
+            window.location.href = "AUsws.aspx?uid=" + uid;
+        }
+
+        function upPFramHeight() {
+            var oh = parentfram.height;
+            var bodyheight = body.clientHeight;
+            if (parseInt(bodyheight) > parseInt(oh)) {
+                parentfram.height = bodyheight + "px";
+            }
+        }
+
+        function emptyrow() {
+            var a = "<table class='table'><thead><tr><th>事务所名称</th><th>排序</th><th>操作</th></tr></thead><tbody id='tbodybox'>";//</tbody></table>";
+            a = a + aprow("无内容...", "", "", "", "", "") + "</tbody></table>";
+            document.getElementById("tablebox").innerHTML = a;
+        }
 
     </script>
 </head>
 <body>
-    
+
     <div class="container-fluid">
-	<div class="row-fluid">
-		<div class="span12">
-			<div class="page-header">
-				<h1>
-					律师事务所管理
-				</h1>
-			</div>
-		</div>
-	</div>
-	<div class="row-fluid">
-		<div class="span12">
-			<div class="row-fluid">
-				<div class="span12">
-					<div class="row-fluid">
-						<div class="span2">
-							<input type="button" class="btn" value="添加事务所" onclick="window.location.href = 'AUsws.aspx'"/>
-						</div>
-						<div class="span2">
-						</div>
-						<div class="span8">
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="row-fluid">
-				<div class="span12">
-					<table class="table">
-						<thead>
-							<tr>
-								<th>
-									编号
-								</th>
-								<th>
-									产品
-								</th>
-								<th>
-									交付时间
-								</th>
-								<th>
-									状态
-								</th>
-                                <th>
-									操作
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>
-									1
-								</td>
-								<td>
-									TB - Monthly
-								</td>
-								<td>
-									01/04/2012
-								</td>
-								<td>
-									Default
-								</td>
-                                <td>
-									Default
-								</td>
-							</tr>
-							<tr class="success">
-								<td>
-									1
-								</td>
-								<td>
-									TB - Monthly
-								</td>
-								<td>
-									01/04/2012
-								</td>
-								<td>
-									Approved
-								</td>
-							</tr>
-							<tr class="error">
-								<td>
-									2
-								</td>
-								<td>
-									TB - Monthly
-								</td>
-								<td>
-									02/04/2012
-								</td>
-								<td>
-									Declined
-								</td>
-							</tr>
-							<tr class="warning">
-								<td>
-									3
-								</td>
-								<td>
-									TB - Monthly
-								</td>
-								<td>
-									03/04/2012
-								</td>
-								<td>
-									Pending
-								</td>
-							</tr>
-							<tr class="info">
-								<td>
-									4
-								</td>
-								<td>
-									TB - Monthly
-								</td>
-								<td>
-									04/04/2012
-								</td>
-								<td>
-									Call in to confirm
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="page-header">
+                    <h1>律师事务所管理
+                    </h1>
+                </div>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="row-fluid">
+                    <div class="span12">
+                        <div class="row-fluid">
+                            <div class="span2">
+                                <input type="button" class="btn" value="添加事务所" onclick="window.location.href = 'AUsws.aspx'" />
+                            </div>
+                            <div class="span2">
+                            </div>
+                            <div class="span8">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span12">
+                        <div id="tablebox">
+                            <table class="table">
+                                <thead>
+                                    
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>
