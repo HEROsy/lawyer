@@ -54,8 +54,137 @@ public partial class admin_AsyCenter : System.Web.UI.Page
             case "upsws":
                 UpSws();
                 break;
+
+            case "addlawyer":
+                AddLawyer();
+                break;
+
+            case "getlawyer":
+                GetLawyer();
+                break;
+
+            case "deletelawyer":
+                DeleteLawyer();
+                break;
+
+            case "uplawyer":
+                UpLawyer();
+                break;
+
+            case "changepw":
+                ChangePw();
+                break;
+
             default:
                 break;
+        }
+
+    }
+
+    private void ChangePw()
+    {
+        String old=Request.Form["old"];
+        String pw1=Request.Form["pw1"];
+        String pw2=Request.Form["pw2"];
+
+        DataTable dt = bll.GetAdmin_pw(Session["adminid"].ToString());
+
+        if (!dt.Rows[0]["pw"].ToString().Equals(old))
+        {
+            Response.Write("no:");
+            Response.End();
+        }
+
+        int r = bll.UpPw(pw2, Session["adminid"].ToString());
+        if (r == 1)
+        {
+            Session["adminid"] = null;
+            Response.Write("ok:");
+            Response.End();
+        }
+        else
+        {
+            Response.Write("no:");
+            Response.End();
+        }
+    }
+
+    private void UpLawyer()
+    {
+        String name = Request.Form["name"];
+        String dw = Request.Form["dw"];
+        String px = Request.Form["px"];
+        String pic = Request.Form["pic"];
+        String contents = Request.Form["contents"];
+        String uid=Request.Form["uid"];
+
+        int r = bll.UpLawyer(name, px, pic, contents, uid, dw);
+
+        if (r == 1)
+        {
+            Response.Write("ok:");
+            Response.End();
+        }
+        else
+        {
+            Response.Write("no:");
+            Response.End();
+        }
+    }
+
+    private void DeleteLawyer()
+    {
+        String did=Request.Form["did"];
+        int r = -1;
+        if (!String.IsNullOrEmpty(did))
+        {
+            r = bll.DeleteLawyer(did);
+        }
+
+        if (r == 1)
+        {
+            Response.Write("ok:");
+            Response.End();
+        }
+        else
+        {
+            Response.Write("no:");
+            Response.End();
+        }
+    }
+
+    private void GetLawyer()
+    {
+       String swsid=Request.Form["swsid"];
+       DataTable dt = bll.GetLawyer(swsid);
+       String r = "";
+       if (dt!=null)
+       {
+           r = Tools.BiuldJson("", dt);
+       }
+       Response.Write(r);
+       Response.End();
+    }
+
+    private void AddLawyer()
+    {
+        String name = Request.Form["name"];
+        String dw = Request.Form["dw"];
+        String px = Request.Form["px"];
+        String pic = Request.Form["pic"];
+        String contents = Request.Form["contents"];
+
+        int r = bll.AddLawyer(name, px, pic, contents, dw);
+
+        if (r == 1)
+        {
+            Response.Write("ok:");
+            Response.End();
+        }
+        else
+        {
+            Response.Write("no:");
+            Response.End();
         }
 
     }

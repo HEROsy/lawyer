@@ -46,7 +46,7 @@
 											<a href="cpw.aspx" target="center">修改密码</a>
 										</li>
 										<li>
-											<a href="#">安全退出</a>
+											<a href="Default.aspx?out=1">安全退出</a>
 										</li>
 									</ul>
 								</li>

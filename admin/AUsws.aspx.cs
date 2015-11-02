@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class admin_AUsws : System.Web.UI.Page
+public partial class admin_AUsws : AdminCheck
 {
     public String PageHead = "";
     public String BtnValue = "";

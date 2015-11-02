@@ -63,10 +63,17 @@ public static class Tools
 
          
         }
-
-        json = json.Substring(0, json.LastIndexOf(','));
-        String r = String.Format("[{0}]",json);
-        return r;
+        if (json.Contains(','))
+        {
+            json = json.Substring(0, json.LastIndexOf(','));
+            String r = String.Format("[{0}]", json);
+            return r;
+        }
+        else
+        {
+            return "";
+        }
+        
     }
 
     public static String encode(String str)

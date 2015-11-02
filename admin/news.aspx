@@ -97,6 +97,29 @@
             })
         }
 
+        function Inittimes(timestr)
+        {
+            return timestr.substr(0, timestr.indexOf(" "));
+        }
+
+        function getclassname(classdata,cid)
+        {
+            var r = "未获取";
+            for (var i = 0; i < classdata.length; i++) {
+                if(classdata[i].id==cid)
+                {
+                    r = decode(classdata[i].names);
+                    break;
+                }
+            }
+            return r;
+        }
+
+        function decode(str) {
+            str = decodeURIComponent(str.replace(/\+/g, '%20'));
+            return str;
+        }
+
         function creatrow(md)
         {
 
@@ -139,29 +162,6 @@
             document.getElementById("tablebox").innerHTML = a;
             upPFramHeight();
            
-        }
-
-        function Inittimes(timestr)
-        {
-            return timestr.substr(0, timestr.indexOf(" "));
-        }
-
-        function getclassname(classdata,cid)
-        {
-            var r = "未获取";
-            for (var i = 0; i < classdata.length; i++) {
-                if(classdata[i].id==cid)
-                {
-                    r = decode(classdata[i].names);
-                    break;
-                }
-            }
-            return r;
-        }
-
-        function decode(str) {
-            str = decodeURIComponent(str.replace(/\+/g, '%20'));
-            return str;
         }
 
         function aprow(titles, bc, sc, times, id, classname) {
