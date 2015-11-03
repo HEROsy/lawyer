@@ -21,6 +21,7 @@ public static class Tools
         String json = "";
         if (dt!=null)
         {
+            if (dt.Rows.Count <= 0) { return ""; };
             String str = "";
             String[] colnames = null;
             String _key = "";
