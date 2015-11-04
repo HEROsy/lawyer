@@ -42,7 +42,7 @@ public partial class showlawyer : System.Web.UI.Page
             }
         }
 
-        String swsid = "4";// Request.QueryString["swsid"];
+        String swsid =Request.QueryString["swsid"];
         if (!String.IsNullOrEmpty(swsid))
         {
              spr = new SqlParameter[] {
