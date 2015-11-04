@@ -30,7 +30,7 @@ public partial class _Default : System.Web.UI.Page
         SqlParameter[] spr = new SqlParameter[] {
         new SqlParameter("@pic","''")
         };
-        String sql = SqlHelper.GetSQLSelect_normal("top 5", "id,contents,bclass,sclass,titles,pic", "article", spr, "<>", "", "id desc");
+        String sql = SqlHelper.GetSQLSelect_normal("top 5", "id,contents,bclass,sclass,titles,pic,fbtimes", "article", spr, "<>", "", "id desc");
         DataTable dt = SqlHelper.GetTable(sql, CommandType.Text, spr);
         if (dt!=null)
         {
