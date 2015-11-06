@@ -401,34 +401,33 @@
             $('.carousel').carousel(
             { interval: 5000 })
             dh();
-            Inittop5();
+            //Inittop5();
         }
-        function Inittop5()
-        {
-            var tv = document.getElementById("top5value").value;
-            var json_tv = null;
-            try {
-                json_tv = eval("("+tv+")");
-            } catch (e) {
-                return false;
-            }
-            var tops = "";
-            for (var i = 0; i < json_tv.length; i++) {
-                tops = tops + createtop5(decode(json_tv[i].titles), decode(json_tv[i].fbtimes), decode(json_tv[i].pic))
-            }
-            document.getElementById("top5box").innerHTML = tops;
-        }
-
+        //function Inittop5()
+        //{
+        //    var tv = document.getElementById("top5value").value;
+        //    var json_tv = null;
+        //    try {
+        //        json_tv = eval("("+tv+")");
+        //    } catch (e) {
+        //        return false;
+        //    }
+        //    var tops = "";
+        //    for (var i = 0; i < json_tv.length; i++) {
+        //        tops = tops + createtop5(decode(json_tv[i].titles), decode(json_tv[i].fbtimes), decode(json_tv[i].pic))
+        //    }
+        //    document.getElementById("top5box").innerHTML = tops;
+        //}
        
-         function decode(str) {
-            str = decodeURIComponent(str.replace(/\+/g, '%20'));
-            return str;
-        }
+        //function decode(str) {
+        //    str = decodeURIComponent(str.replace(/\+/g, '%20'));
+        //    return str;
+        //}
       
-        function createtop5(title,times,pic) {
-            var str = "<div class='top5' id='p1'  onmouseover='this.style.cursor='pointer'' onclick='window.location.href='#''><div class='top5_1'><span>01</span></div><div class='top5_2'><span class='top5_2_s1'>"+title+"</span><span class='top5_2_s2'>POST TIME:"+times+"</span></div><div class='top5_3'><span>more</span></div><div class='p1'><img src='img/upload/"+pic+"' style='width:100%;height:100%' /></div></div>";
-            return str;
-        }
+        //function createtop5(title,times,pic) {
+        //    var str = "<div class='top5' id='p1'  onmouseover='this.style.cursor='pointer'' onclick='window.location.href='#''><div class='top5_1'><span>01</span></div><div class='top5_2'><span class='top5_2_s1'>"+title+"</span><span class='top5_2_s2'>POST TIME:"+times+"</span></div><div class='top5_3'><span>more</span></div><div class='p1'><img src='img/upload/"+pic+"' style='width:100%;height:100%' /></div></div>";
+        //    return str;
+        //}
 
     </script>
 </head>
@@ -509,7 +508,7 @@
             </div>
         </div>
     </div>
-    <input type="hidden" id="top5value" value="<%=json_pic %>" />
+<%--    <input type="hidden" id="top5value" value="<%=json_pic %>" />--%>
 
 </div>
 <%--最新图文结束--%>

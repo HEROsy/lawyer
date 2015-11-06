@@ -33,7 +33,7 @@
          </div>
 
          <div style="width:300px;float:left">
-         <img src="img/foot.png" style="float: right;margin-right: 66px;margin-top: -10px;" />
+         <img src="img/foot.png" style="float: right;margin-right: 66px;margin-top: -1px;" />
          </div>
      </div>
 </div>
