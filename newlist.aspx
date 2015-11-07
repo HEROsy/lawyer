@@ -89,6 +89,15 @@
                 margin-right: -13px;
             }
 
+                .mbx span a {
+                    color: #ffffff;
+                }
+
+                    .mbx span a:hover {
+                        text-decoration: none;
+                        color: #ffffff;
+                    }
+
         .pagination ul li a {
             color: #49AEA5;
         }

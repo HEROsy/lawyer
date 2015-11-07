@@ -279,27 +279,28 @@
         function dh() {
             var nowurl;
             nowurl = window.location.href;
-            if (nowurl.indexOf("newlist.aspx") > 0) {
+            if (nowurl.indexOf("aboutus.aspx") > 0) {
+                document.getElementById("dh1").style.backgroundImage = "url(../img/block.png)";
+            }
+            else if (nowurl.indexOf("newlist.aspx?bid=1") > 0) {
+                document.getElementById("dh2").style.backgroundImage = "url(../img/block.png)";
+            }
+            else if (nowurl.indexOf("newlist.aspx?bid=2") > 0) {
                 document.getElementById("dh3").style.backgroundImage = "url(../img/block.png)";
             }
-            else if (nowurl.indexOf("Text") > 0) {
-
+            else if (nowurl.indexOf("newlist.aspx?bid=3") > 0) {
+                document.getElementById("dh4").style.backgroundImage = "url(../img/block.png)";
             }
-            else if (nowurl.indexOf("Text") > 0) {
-
+            else if (nowurl.indexOf("newlist.aspx?bid=4") > 0) {
+                document.getElementById("dh6").style.backgroundImage = "url(../img/block.png)";
             }
-            else if (nowurl.indexOf("Text") > 0) {
-
+            else if (nowurl.indexOf("lawyerlist.aspx") > 0 || nowurl.indexOf("showlawyer.aspx") > 0) {
+                document.getElementById("dh5").style.backgroundImage = "url(../img/block.png)";
             }
-            else if (nowurl.indexOf("Text") > 0) {
-
+            else if (nowurl.indexOf("lxww.aspx") > 0) {
+                document.getElementById("dh7").style.backgroundImage = "url(../img/block.png)";
             }
-            else if (nowurl.indexOf("Text") > 0) {
-
-            }
-            else if (nowurl.indexOf("Text") > 0) {
-
-            } else {
+            else {
                 document.getElementById("dh0").style.backgroundImage = "url(../img/block.png)";
             }
         }
@@ -326,25 +327,25 @@
                         <div style="width: 200px; display: block; float: left">
                             <img src="../img/logo.png" />
                         </div>
-                        <div id="dh0" onmouseover="this.style.cursor='pointer'" onclick="window.location.href='#'"><span class="ch">网站首页</span><span class="en">Home</span></div>
-                        <div id="dh1" onmouseover="this.style.cursor='pointer'" onclick="window.location.href='#'"><span class="ch">关于律协</span><span class="en">About</span></div>
-                        <div id="dh2" onmouseover="this.style.cursor='pointer'" onclick="window.location.href='#'">
-                            <span class="ch">信息中心</span><span class="en">Information</span>
-                            <div class="dhf" onclick="window.location.href='#'">协会动态</div>
-                            <div class="dhf1" onclick="window.location.href='#'">行业新闻</div>
+                        <div id="dh0" onmouseover="this.style.cursor='pointer'" onclick="window.location.href='Default.aspx'"><span class="ch">网站首页</span><span class="en">Home</span></div>
+                        <div id="dh1" onmouseover="this.style.cursor='pointer'" onclick="window.location.href='aboutus.aspx'"><span class="ch">关于律协</span><span class="en">About</span></div>
+                        <div id="dh2">
+                            <div onmouseover="this.style.cursor='pointer'" onclick="window.location.href='newlist.aspx?bid=1'"><span class="ch">信息中心</span><span class="en">Information</span></div>
+                            <div class="dhf" onmouseover="this.style.cursor='pointer'" onclick="window.location.href='newlist.aspx?bid=1&sid=5'">协会动态</div>
+                            <div class="dhf1" onmouseover="this.style.cursor='pointer'" onclick="window.location.href='newlist.aspx?bid=1&sid=6'">行业新闻</div>
                         </div>
-                        <div id="dh3" onmouseover="this.style.cursor='pointer'" onclick="window.location.href='#'">
-                            <span class="ch">律师党建</span><span class="en">Building</span>
-                            <div class="dhf2" onclick="window.location.href='#'">党委简介</div>
-                            <div class="dhf3" onclick="window.location.href='#'">党委动态</div>
-                            <div class="dhf4" onclick="window.location.href='#'">党建理论</div>
-                            <div class="dhfleft" style ="position: absolute;width: 97px;margin: 77px 0 0 100px;" onclick="window.location.href='#'">会议精神</div>
-                            <div class="dhfleft" style ="position: absolute;width: 97px;margin: 128px 0 0 100px;" onclick="window.location.href='#'">党委通知</div>
+                        <div id="dh3">
+                            <div onmouseover="this.style.cursor='pointer'" onclick="window.location.href='newlist.aspx?bid=2'"><span class="ch">律师党建</span><span class="en">Building</span></div>
+                            <div class="dhf2" onmouseover="this.style.cursor='pointer'" onclick="window.location.href='newlist.aspx?bid=2&sid=7'">党委简介</div>
+                            <div class="dhf3" onmouseover="this.style.cursor='pointer'" onclick="window.location.href='newlist.aspx?bid=2&sid=8'">党委动态</div>
+                            <div class="dhf4" onmouseover="this.style.cursor='pointer'" onclick="window.location.href='newlist.aspx?bid=2&sid=9'">党建理论</div>
+                            <div class="dhfleft" style ="position: absolute;width: 97px;margin: 77px 0 0 100px;" onmouseover="this.style.cursor='pointer'" onclick="window.location.href='newlist.aspx?bid=2&sid=10'">会议精神</div>
+                            <div class="dhfleft" style ="position: absolute;width: 97px;margin: 128px 0 0 100px;" onmouseover="this.style.cursor='pointer'" onclick="window.location.href='newlist.aspx?bid=2&sid=11'">党委通知</div>
                         </div>
-                        <div id="dh4" onmouseover="this.style.cursor='pointer'" onclick="window.location.href='#'"><span class="ch">法律检索</span><span class="en">Retrieval</span></div>
-                        <div id="dh5" onmouseover="this.style.cursor='pointer'" onclick="window.location.href='#'"><span class="ch">律师黄页</span><span class="en">Pages</span></div>
-                        <div id="dh6" onmouseover="this.style.cursor='pointer'" onclick="window.location.href='#'"><span class="ch">诚信信息</span><span class="en">Sincerity</span></div>
-                        <div id="dh7" onmouseover="this.style.cursor='pointer'" onclick="window.location.href='#'"><span class="ch">联系我们</span><span class="en">Contact</span></div>
+                        <div id="dh4" onmouseover="this.style.cursor='pointer'" onclick="window.location.href='newlist.aspx?bid=3'"><span class="ch">法律检索</span><span class="en">Retrieval</span></div>
+                        <div id="dh5" onmouseover="this.style.cursor='pointer'" onclick="window.location.href='lawyerlist.aspx'"><span class="ch">律师黄页</span><span class="en">Pages</span></div>
+                        <div id="dh6" onmouseover="this.style.cursor='pointer'" onclick="window.location.href='newlist.aspx?bid=4'"><span class="ch">诚信信息</span><span class="en">Sincerity</span></div>
+                        <div id="dh7" onmouseover="this.style.cursor='pointer'" onclick="window.location.href='lxww.aspx'"><span class="ch">联系我们</span><span class="en">Contact</span></div>
                     </div>
                 </div>
             </div>
